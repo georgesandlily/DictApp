@@ -18,8 +18,8 @@ class MysqlDb:
             if self.m_dbConnect is None:
                 self.m_dbConnect = pymysql.connect(host='localhost',
                                               user='root',
-                                              passwd='swallow1',
-                                              db='dictionary_db',
+                                              passwd='',
+                                              db='',
                                               port=3306,
                                               charset='utf8')
 
