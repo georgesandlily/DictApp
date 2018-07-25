@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="utf-8" xmlns="http://www.w3.org/1999/html">
+<head>
+<title>Dictionary Maintenance</title>
+<meta charset="utf-8">
+<meta name="generator" content="Google Web Designer 3.0.1.0319">
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="/static/css/normalize.min.css">
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css'>
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+
+<body onload="myloading()">
+<div class="wrapper">
+    <header class="SiteHeader">
+      <!--img src="logo.png" alt="hangge.com"-->
+            <div class="row">
+        <h1>Dictionary Maintenance Home
+            <div class="free_search">
+            <ul id="id_title_func">
+            <input id="searchbox-input" type="search" value="" maxlength="300" placeholder="Search the sites" onsearch="freeSearch()" />
+                <a href="" target="mainFrame" value="" class="" onclick="show_modal_insert_form(); return false"><span class="glyphicon glyphicon-plus"></span> Append new entry</a>
+                <a href="#" target="mainFrame" id="id_title_username" value="" class="" onclick="show_modal_login_form(); return false"><span class="glyphicon glyphicon-log-in"></span> login</a>
+            </ul>
+            </div>
+
+            <div>
+            </div>
+        </h1>
+            </div>
+
+    </header>
+    <aside class="NavSidebar">
+      <nav>
+        <h2 class="leftmenu_title">Import</h2>
+        <a class="leftmenu_item" href="#id_import">Import Language File</a>
+        <hr class="leftmenu_hr">
+
+        <h2 class="leftmenu_title">Language list</h2>
+          <ul id='id_language_item' class="left_menu_scroll">
+              <li id="ml_all" class="leftmenu_li" title="All Language">
+                    <a href="#id_all" value="all" class="leftmenu_item" onclick="setCurrentLanguage()">All languages</a>
+              </li>
+
+            </ul>
+        <hr class="leftmenu_hr">
+
+        <h2 class="leftmenu_title">Vocabulary books</h2>
+          <a class="leftmenu_item" href="#id_create_vb"><span class="glyphicon glyphicon-plus"> </span> Add new vocabulary book</a>
+          <ul id='id_vb_item' class="left_menu_scroll">
+          </ul>
+        <hr class="leftmenu_hr">
+
+        <h2 class="leftmenu_title" >Download</h2>
+        <a class="leftmenu_item" href="/static/download/language_template.xlsx" title="Download template">Template</a>
+        <hr class="leftmenu_hr">
+
+
+      </nav>
+
+      <section>
+        <h3>About</h3>
+        <p>This dictionary has over 30000 entries.
+        </p>
+      </section>
+
+      <div>
+        <!--img src="ad.png" alt="Luckies cigarette ad: it's toasted"-->
+      </div>
+    </aside>
+    <main style="display:inline">
+    <div class="Mainpage">
+        <div class="Content" id="id_import">
+          <header class="ArticleHeader">
+            <h2>Choose your language file</h2>
+              <hr>
+          </header>
+                <form class="form-group" method='post' enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <input type='hidden' id='id_city' name='city' />
+                <input type='hidden' id='id_ip_address' name='ip_address' />
+                <input type='hidden' id='id_region' name='region'/>
+                <input type='hidden' id='id_country' name='country'/>
+                <input type='hidden' id='id_latitude' name='latitude'/>
+                <input type='hidden' id='id_longitude' name='longitude'/>
+                <input type='hidden' id='id_timezone' name='time_zone'/>
+                <input type='hidden' id='id_user' name='update_user'/>
+                         <br>
+                <input type='checkbox' id='id_checkbox' name='update_check' >Update interpretation from this file...</input>
+
+
+                <br><hr>
+                <button type='submit' class="btn btn-primary" id='id_btn_import'><span class="glyphicon glyphicon-import"> </span>import</button>
+
+
+                </form>
+                <input type='hidden' id='id_procid' name='proc_id' value="{{proc_id}}" />
+                <input type='hidden' id='id_language_file' name='language_file' value="{{language_file}}"/>
+                <p id='id_tip' class='page_message' />
+        </div>
+
+       <div class="Content" id="id_progressbar">
+          <header class="ArticleHeader">
+            <h2>{{language_file}} is importing</h2>
+              <hr>
+          </header>
+            <section class="title" id="id_title" >waiting for importing finished</section>
+              <section class="border" id="id_border">
+               <section class="bar" id="id_bar"></section>
+              </section>
+            <section class="desc" id="id_desc">Start importing </section>
+
+       </div>
+
+        <div class="Content" id="id_one">
+          <header  class="ArticleHeader">
+              <h2 id="id_language_subtitle"></h2>
+
+              <hr>
+
+          </header>
+            <nav>
+                <button type="submit" id="id_search_history" class="btn btn-primary" ><span class="glyphicon glyphicon-th-list"></span> view import history</button>
+                <button type="submit" id="id_search_allwords" class="btn btn-primary" ><span class="glyphicon glyphicon-list-alt"> </span> view entries info</button>
+            </nav>
+
+              <p id="id_result"></p>
+        </div>
+
+        <div class="Content" id="id_all">
+          <header  class="ArticleHeader">
+            <h2 >Language import history</h2>
+              <hr>
+          </header>
+            <nav>
+              <button type="submit" id="id_search_all" class="btn btn-primary" ><span class="glyphicon glyphicon-th-list"></span> View history</button>
+            </nav>
+            <p id="id_result_all"></p>
+
+        </div>
+
+        <div class="Content" id="id_freesearch">
+          <header  class="ArticleHeader">
+            <h2 >Search Result</h2>
+              <hr>
+          </header>
+              <p id="id_result_freesearch"></p>
+
+        </div>
+
+        <div class="Content" id="id_append">
+          <header  class="ArticleHeader">
+            <h2 >Append Result</h2>
+              <hr>
+          </header>
+              <p id="id_result_append"></p>
+
+        </div>
+
+        <div class="Content" id="id_create_vb">
+          <header  class="ArticleHeader">
+            <h2 >Create new vocabulary book </h2>
+              <hr>
+          </header>
+             <p class="form-group">
+            <label>Vocabulary book name: </label>
+            <br>
+            <input type="text" id="id_vb_name" name="vb_name" required="required"  placeholder="input vocabulary book name" maxlength="255"/>
+        </p>
+        <p class="form-group">
+            <label>Vocabulary book description: </label>
+            <br>
+            <textarea id="id_vb_desc" name="vb_desc" placeholder="input description" row="20" cols="50" ></textarea>
+            <br>
+            <button type="button" id="btn_create_vb" class="btn btn-primary" onclick="saveVocabularyBook()"><span class="glyphicon glyphicon-plus"></span> Create</button>
+        </p>
+            <p class="form-group" id="id_tips_vb"></p>
+
+        </div>
+
+        <div class="Content" id="id_vb_one">
+            <header  class="ArticleHeader">
+            <h2 id="id_vb_list_title">Vocabulary book</h2>
+                <p id="id_vb_desc_one" name="vb_desc"></p>
+                <a href="#" id="btn_save_vb" class="" onclick="saveVocabularyBook()"><span class="glyphicon glyphica href="></span> edit</a>
+              <hr>
+            <!--p class="form-group" >
+                <label>Vocabulary book description: </label>
+                <br>
+                <textarea id="id_vb_desc_one" name="vb_desc" placeholder="input description" row="20" cols="50" ></textarea>
+                <hr class="hr-in-page">
+            </p-->
+            </header>
+            <p id="id_one_vb_result"></p>
+        </div>
+
+    </div>
+
+     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >×</span></button>
+              <h4 class="modal-title" id="myModalLabel">Entry edit</h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-group">
+                <label for="txt_entry">Entry</label>
+                <input type="text" name="txt_entry" class="form-control" id="id_entry" placeholder="entry">
+                <input type="hidden" id="id_stringId" name="string_id">
+              </div>
+              <div class="form-group">
+                <label for="txt_interpretation">Interpretation</label>
+                <input type="text" name="txt_interpretation" class="form-control" id="id_interpretation" placeholder="interpretation">
+                <input type="hidden" id="id_languageID_edit" name="lang_id_edit">
+
+                <br>
+                <button type="button" id="id_AzureTranslate" class="btn btn-default" onclick="azure_translate()"><span class="glyphicon glyphicon-pencil"></span>T</button>
+                <button type="button" id="id_Playtext" class="btn btn-default"><span class="glyphicon glyphicon-play"></span></button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Close</button>
+              <button type="button" id="btn_update_submit" class="btn btn-primary" data-dismiss="modal" onclick="updatedEntry(this)"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <div class="modal fade" id="myModal_ins" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+              <h4 class="modal-title" id="id_ModalLabel">Entry insert</h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-group">
+                <label for="txt_entry">Entry</label>
+                <input type="text" name="txt_entry" class="form-control" id="id_new_entry" placeholder="please input entry" autofocus>
+              </div>
+              <div class="form-group">
+                <label for="txt_interpretation">Interpretation</label>
+                <input type="text" name="txt_interpretation" class="form-control" id="id_new_interpretation" placeholder="interpretation">
+                 <br>
+                  <button type="button" id="id_ins_AzureTranslate" class="btn btn-default"  onclick="azure_translate_insert()"><span class="glyphicon glyphicon-pencil"></span> T </button>
+                  <input type="hidden" id="id_pageName" name="string_id">
+              </div>
+              <div class="form-group">
+                <label for="txt_langCode">Language code</label>
+                  <input type="text" name="txt_langCode" class="form-control" id="id_new_langCode" placeholder="">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Close</button>
+              <button type="button" id="btn_insert_submit" class="btn btn-primary" data-dismiss="modal" onclick="insertNewEntry(this)"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <div class="modal fade" id="myModal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove"></span> </button>
+              <h4 class="modal-title" id="id_user_login">Login</h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-group">
+                <label for="txt_username">User name</label>
+                <input type="text" name="txt_user_name" class="form-control" id="id_user_name" placeholder="please input user name" autofocus>
+              </div>
+              <div class="form-group">
+                <label for="txt_password">password</label>
+                <input type="password" name="txt_password" class="form-control" id="id_user_password" placeholder="interpretation">
+              </div>
+              <a href="#id_import" id="id_createuser" onclick="do_createUser(this)"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Register</a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Close</button>
+              <button type="button" id="btn_login" class="btn btn-primary" data-dismiss="modal" onclick="do_userLogin(this)"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <div class="modal fade" id="myWaiting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <label for="txt_msg">inserting new entry... </label>
+        </div>
+    </main>
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<!--script src="/static/js/jquery-3.1.0.min.js"></script-->
+<script type="text/javascript" src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/showProgressbar.js"></script>
+<script type="text/javascript" src="/static/js/initialAll.js"></script>
+<script type="text/javascript" src="/static/js/searchDB.js"></script>
+<script type="text/javascript" src="/static/js/editAllwordsTable.js"></script>
+<script type="text/javascript" src="/static/js/editVB.js"></script>
+<script type="text/javascript" src="/static/js/buildPageDisplay.js"></script>
+<script type="text/javascript" src="/static/js/localDB.js"></script>
+<script type="text/javascript" src="/static/js/user_management.js"></script>
+
+</body>
+
+</html>

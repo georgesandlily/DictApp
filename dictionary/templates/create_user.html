@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="utf-8" xmlns="http://www.w3.org/1999/html">
+<head>
+<title>Dictionary Maintenance</title>
+<meta charset="utf-8">
+<meta name="generator" content="Google Web Designer 3.0.1.0319">
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="/static/css/normalize.min.css">
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css'>
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+
+
+<header class="SiteHeader">
+  <!--img src="logo.png" alt="hangge.com"-->
+    <meta charset="UTF-8">
+    <h1>Register new user
+    </h1>
+</header>
+
+<body>
+        <div id="userManageDiv">
+            <header class="ArticleHeader">
+             <h2> </h2>
+              <hr>
+          </header>
+        <div id="" style="margin-left: 10px;">
+            <div class="form-group" >
+                <span id="basic-addon1" >User name</span>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Please input your name" aria-describedby="basic-addon1" style="width : 500px" />
+            </div>
+
+            <div class="form-group" >
+                <span id="basic-addon2" >password</span>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Please input your password" aria-describedby="basic-addon2" style="width : 500px"/>
+            </div>
+
+            <div class="form-group" >
+                <span id="basic-addon3">Confirm password</span>
+                <input type="password" class="form-control" id="passwordAgain" name="passwordAgain" placeholder="Please input your password again " aria-describedby="basic-addon3" style="width : 500px"/>
+            </div>
+
+            <div class="form-group" >
+                <span id="basic-addon4">email</span>
+                <input type="text" class="form-control" id="email" name="passwordAgain" placeholder="Please input your email address" aria-describedby="basic-addon3" style="width : 500px"/>
+            </div>
+            <hr style="margin-top: 5px;" />
+
+            <button type="button" id="createUser_backBtn" class="btn btn-default" data-toggle="modal" data-target="#alertTip"  style="width: 100px; margin-left:40px" onclick="goback()">back</button>
+            <button type="button" id="createUserBtn" class="btn btn-default" data-toggle="modal" data-target="#alertTip"  style="width: 100px; margin-left:40px" onclick="createUser()">create</button>
+        </div>
+        <p id='id_tip' class='page_message' />
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<!--script src="/static/js/jquery-3.1.0.min.js"></script-->
+<script type="text/javascript" src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/initialAll.js"></script>
+<script type="text/javascript" src="/static/js/user_management.js"></script>
+</html>
